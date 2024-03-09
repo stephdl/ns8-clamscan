@@ -12,11 +12,11 @@
     ],
     "type": "object",
     "required": [
-        "host",
+        "fqdn",
         "path"
     ],
     "properties": {
-        "host": {
+        "fqdn": {
             "type": "string",
             "description": "Host name for the application, like 'netdata.domain.org'",
             "format": "idn-hostname"
