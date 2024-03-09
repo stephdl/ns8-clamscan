@@ -23,7 +23,6 @@ ExecStartPre=-runagent discover-smarthost
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/netdata-app.pid \
     --cidfile %t/netdata-app.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/netdata.pod-id --replace -d --name  netdata-app \
-    --hostname=${HOSTNAME} \
     --volume ./netdata/config:/etc/netdata:Z \
     --volume ./netdata/lib:/var/lib/netdata:Z \
     --volume ./netdata/cache:/var/cache/netdata:Z \
