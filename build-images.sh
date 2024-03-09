@@ -44,7 +44,7 @@ buildah add "${container}" ui/dist /ui
 buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=traefik@node:routeadm node:fwadm" \
     --label="org.nethserver.tcp-ports-demand=1" \
-    --label="org.nethserver.rootfull=0" \
+    --label="org.nethserver.rootfull=1" \
     --label="org.nethserver.images=docker.io/netdata/netdata:v1.44.3" \
     "${container}"
 # Commit the image
