@@ -12,20 +12,8 @@
     ],
     "type": "object",
     "required": [
-        "host",
-        "http2https"
+
     ],
     "properties": {
-        "host": {
-            "type": "string",
-            "description": "Host name for the application, like 'netdata.domain.org'",
-            "format": "hostname",
-            "pattern": "\\."
-        },
-        "http2https": {
-            "type": "boolean",
-            "title": "HTTP to HTTPS redirection",
-            "description": "Redirect all the HTTP requests to HTTPS"
-        }
     }
 }
