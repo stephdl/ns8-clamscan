@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+#
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+
+import agent
+import agent.tasks
+
+# Setup configuration for netdata registration
+agent.set_env("NETDATA_CLAIM_TOKEN", "")
+agent.set_env("NETDATA_CLAIM_ROOMS", "")
+
