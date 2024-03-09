@@ -24,43 +24,14 @@
         <cv-tile light>
           <cv-form @submit.prevent="configureModule">
             <cv-text-input
-              :label="$t('settings.netdata_fqdn')"
-              placeholder="netdata.example.org"
-              v-model.trim="host"
+              :label="$t('settings.netdata_path')"
+              v-model.trim="path"
               class="mg-bottom"
-              :invalid-message="$t(error.host)"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              ref="host"
+              :invalid-message="$t(error.path)"
+              disabled
+              ref="path"
             >
             </cv-text-input>
-            <cv-toggle
-              value="letsEncrypt"
-              :label="$t('settings.lets_encrypt')"
-              v-model="isLetsEncryptEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              class="mg-bottom"
-            >
-              <template slot="text-left">{{
-                $t("settings.disabled")
-              }}</template>
-              <template slot="text-right">{{
-                $t("settings.enabled")
-              }}</template>
-            </cv-toggle>
-            <cv-toggle
-              value="httpToHttps"
-              :label="$t('settings.http_to_https')"
-              v-model="isHttpToHttpsEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              class="mg-bottom"
-            >
-              <template slot="text-left">{{
-                $t("settings.disabled")
-              }}</template>
-              <template slot="text-right">{{
-                $t("settings.enabled")
-              }}</template>
-            </cv-toggle>
               <!-- advanced options -->
             <cv-accordion ref="accordion" class="maxwidth mg-bottom">
               <cv-accordion-item :open="toggleAccordion[0]">
@@ -122,9 +93,7 @@ export default {
         page: "settings",
       },
       urlCheckInterval: null,
-      host: "",
-      isLetsEncryptEnabled: false,
-      isHttpToHttpsEnabled: true,
+      path: "",
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -132,7 +101,7 @@ export default {
       error: {
         getConfiguration: "",
         configureModule: "",
-        host: "",
+        path: "",
         lets_encrypt: "",
         http2https: "",
       },
@@ -199,22 +168,19 @@ export default {
     },
     getConfigurationCompleted(taskContext, taskResult) {
       const config = taskResult.output;
-      this.host = config.host;
-      this.isLetsEncryptEnabled = config.lets_encrypt;
-      this.isHttpToHttpsEnabled = config.http2https;
-
+      this.path = config.path;
       this.loading.getConfiguration = false;
-      this.focusElement("host");
+      this.focusElement("path");
     },
     validateConfigureModule() {
       this.clearErrors(this);
 
       let isValidationOk = true;
-      if (!this.host) {
-        this.error.host = "common.required";
+      if (!this.path) {
+        this.error.path = "common.required";
 
         if (isValidationOk) {
-          this.focusElement("host");
+          this.focusElement("path");
         }
         isValidationOk = false;
       }
@@ -268,9 +234,6 @@ export default {
         this.createModuleTaskForApp(this.instanceName, {
           action: taskAction,
           data: {
-            host: this.host,
-            lets_encrypt: this.isLetsEncryptEnabled,
-            http2https: this.isHttpToHttpsEnabled,
           },
           extra: {
             title: this.$t("settings.instance_configuration", {
