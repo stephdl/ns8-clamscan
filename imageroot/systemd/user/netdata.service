@@ -22,6 +22,7 @@ ExecStartPre=/bin/rm -f %t/netdata.pid %t/netdata.pod-id
 ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/netdata.pid \
     --pod-id-file %t/netdata.pod-id \
     --name netdata \
+    --hostname="${HOSTNAME}" \
     --publish 127.0.0.1:${TCP_PORT}:19999 \
     --replace
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/netdata.pod-id
