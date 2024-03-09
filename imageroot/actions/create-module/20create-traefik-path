@@ -24,7 +24,7 @@ def generate_random_hex_string(length):
 
 # Talk with agent using file descriptor.
 # Setup configuration from user input.
-path = generate_random_hex_string(50)
+path = generate_random_hex_string(20)
 agent.set_env("TRAEFIK_PATH", path)
 
 # Make sure everything is saved inside the environment file
@@ -46,6 +46,7 @@ response = agent.tasks.run(
         'path': f'/{path}',
         'http2https': True,
         'lets_encrypt': False,
+        'strip_prefix': True,
     },
 )
 
