@@ -9,8 +9,10 @@
 
 import agent
 import agent.tasks
-
+import subprocess
 # Setup configuration for netdata registration
 agent.set_env("NETDATA_CLAIM_TOKEN", "")
 agent.set_env("NETDATA_CLAIM_ROOMS", "")
 
+host = subprocess.run(['hostname', '-f'], text=True, capture_output=True).stdout.strip()
+agent.set_env("HOSTNAME", host)
