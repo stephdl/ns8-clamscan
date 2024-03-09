@@ -24,7 +24,8 @@ def generate_random_hex_string(length):
 
 # Talk with agent using file descriptor.
 # Setup configuration from user input.
-agent.set_env("TRAEFIK_PATH", generate_random_hex_string(50))
+path = generate_random_hex_string(50)
+agent.set_env("TRAEFIK_PATH", path)
 
 # Make sure everything is saved inside the environment file
 # just before starting systemd unit
@@ -42,8 +43,9 @@ response = agent.tasks.run(
     data={
         'instance': os.environ['MODULE_ID'],
         'url': f'http://127.0.0.1:{os.environ["TCP_PORT"]}',
-        'path': path,
-        'http2https': True
+        'path': f'/{path}',
+        'http2https': True,
+        'lets_encrypt': False,
     },
 )
 
