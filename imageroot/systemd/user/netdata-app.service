@@ -15,13 +15,15 @@ EnvironmentFile=-%S/state/smarthost.env
 WorkingDirectory=%S/state
 Restart=always
 TimeoutStopSec=70
-ExecStartPre=/bin/mkdir -p netdata/{config,lib,cache}
+ExecStartPre=/bin/mkdir -p netdata/config 
+ExecStartPre=/bin/mkdir -p netdata/lib
+ExecStartPre=/bin/mkdir -p netdata/cache
 ExecStartPre=/bin/rm -f %t/netdata-app.pid %t/netdata-app.ctr-id
 ExecStartPre=-runagent discover-smarthost
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/netdata-app.pid \
     --cidfile %t/netdata-app.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/netdata.pod-id --replace -d --name  netdata-app \
-    --hostname=$(hostname -f) \
+    --hostname=${HOSTNAME} \
     --volume ./netdata/config:/etc/netdata:Z \
     --volume ./netdata/lib:/var/lib/netdata:Z \
     --volume ./netdata/cache:/var/cache/netdata:Z \
