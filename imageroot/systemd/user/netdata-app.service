@@ -6,7 +6,7 @@
 [Unit]
 Description=Podman  netdata-app.service
 BindsTo=netdata.service
-After=netdata.service mariadb-app.service
+After=netdata.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -15,22 +15,31 @@ EnvironmentFile=-%S/state/smarthost.env
 WorkingDirectory=%S/state
 Restart=always
 TimeoutStopSec=70
-ExecStartPre=/bin/mkdir -p config
+ExecStartPre=/bin/mkdir -p netdata/{config,lib,cache}
 ExecStartPre=/bin/rm -f %t/netdata-app.pid %t/netdata-app.ctr-id
 ExecStartPre=-runagent discover-smarthost
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/netdata-app.pid \
     --cidfile %t/netdata-app.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/netdata.pod-id --replace -d --name  netdata-app \
-    --volume netdata-app:/var/www/html/:Z \
-    --volume ./tmp:/tmp:Z \
-    --env=MARIADB_* \
-    --env MARIADB_DB_TYPE=mysql \
-    --env MARIADB_DB_HOST=127.0.0.1 \
-    --env MARIADB_DB_PORT=3306 \
-    --env MARIADB_DB_USER=netdata \
-    --env MARIADB_DB_PASSWORD=netdata \
-    --env MARIADB_DB_NAME=netdata \
-    ${NGINX_IMAGE}
+    --hostname=$(hostname -f) \
+    --volume ./netdata/config:/etc/netdata:Z \
+    --volume ./netdata/lib:/var/lib/netdata:Z \
+    --volume ./netdata/cache:/var/cache/netdata:Z \
+    --volume /etc/passwd:/host/etc/passwd:ro \
+    --volume /etc/group:/host/etc/group:ro \
+    --volume /proc:/host/proc:ro \
+    --volume /sys:/host/sys:ro \
+    --volume /etc/os-release:/host/etc/os-release:ro \
+    --volume /etc/localtime:/etc/localtime:ro \
+    --volume /var/log:/host/var/log:ro \
+    --cap-add SYS_ADMIN \
+    --cap-add SYS_PTRACE \
+    --security-opt apparmor=unconfined \
+    --env NETDATA_CLAIM_TOKEN="${NETDATA_CLAIM_TOKEN}" \
+    --env NETDATA_CLAIM_URL=https://app.netdata.cloud \
+    --env NETDATA_CLAIM_ROOMS="${NETDATA_CLAIM_ROOMS}" \
+    --env NETDATA_EXTRA_DEB_PACKAGES="lm-sensors" \
+     ${NETDATA_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/netdata-app.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP netdata-app
 SyslogIdentifier=%u
