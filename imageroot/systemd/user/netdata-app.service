@@ -27,6 +27,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/netdata-app.pid \
     --volume ./netdata/config:/etc/netdata:Z \
     --volume ./netdata/lib:/var/lib/netdata:Z \
     --volume ./netdata/cache:/var/cache/netdata:Z \
+    --volume /etc/hostname:/host/etc/hostname:ro \
     --volume /etc/passwd:/host/etc/passwd:ro \
     --volume /etc/group:/host/etc/group:ro \
     --volume /proc:/host/proc:ro \
