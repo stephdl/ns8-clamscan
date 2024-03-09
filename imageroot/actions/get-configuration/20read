@@ -21,7 +21,7 @@ config = {}
 
 # Read current configuration from the environment file
 config["path"] = os.environ["TRAEFIK_PATH"]
-config["host"] = host
+config["fqdn"] = host
 
 # Dump the configuration to stdout
 json.dump(config, fp=sys.stdout)
