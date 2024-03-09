@@ -1,36 +1,29 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Get kickstart settings",
-    "$id": "http://nethserver.org/json-schema/task/input/kickstart/get-configuration",
-    "description": "Get kickstart settings",
+    "title": "Get netdata settings",
+    "$id": "http://nethserver.org/json-schema/task/input/netdata/get-configuration",
+    "description": "Get netdata settings",
     "examples": [
         {
-            "host": "kickstart.domain.org",
+            "host": "netdata.domain.org",
             "http2https": true,
             "lets_encrypt": true
         }
     ],
     "type": "object",
     "required": [
-        "host",
-        "http2https",
-        "lets_encrypt"
+        "fqdn",
+        "path"
     ],
     "properties": {
-        "host": {
+        "fqdn": {
             "type": "string",
-            "description": "Host name for the application, like 'kickstart.domain.org'",
+            "description": "Host name for the application, like 'netdata.domain.org'",
             "format": "idn-hostname"
         },
-        "lets_encrypt": {
-            "type": "boolean",
-            "title": "Let's Encrypt certificate",
-            "description": "Request a valid Let's Encrypt certificate."
-        },
-        "http2https": {
-            "type": "boolean",
-            "title": "HTTP to HTTPS redirection",
-            "description": "Redirect all the HTTP requests to HTTPS"
+        "path": {
+            "type": "string",
+            "description": "Path to the netdata configuration file"
         }
     }
 }
