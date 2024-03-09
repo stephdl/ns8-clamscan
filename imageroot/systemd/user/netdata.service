@@ -10,8 +10,8 @@
 
 [Unit]
 Description=Podman netdata.service
-Requires=mariadb-app.service netdata-app.service
-Before=mariadb-app.service netdata-app.service
+Requires=netdata-app.service
+Before=netdata-app.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -22,7 +22,7 @@ ExecStartPre=/bin/rm -f %t/netdata.pid %t/netdata.pod-id
 ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/netdata.pid \
     --pod-id-file %t/netdata.pod-id \
     --name netdata \
-    --publish 127.0.0.1:${TCP_PORT}:80 \
+    --publish 127.0.0.1:${TCP_PORT}:19999 \
     --replace
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/netdata.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/netdata.pod-id -t 10
