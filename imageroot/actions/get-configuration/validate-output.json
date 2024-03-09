@@ -13,8 +13,7 @@
     "type": "object",
     "required": [
         "host",
-        "http2https",
-        "lets_encrypt"
+        "path"
     ],
     "properties": {
         "host": {
@@ -22,15 +21,9 @@
             "description": "Host name for the application, like 'netdata.domain.org'",
             "format": "idn-hostname"
         },
-        "lets_encrypt": {
-            "type": "boolean",
-            "title": "Let's Encrypt certificate",
-            "description": "Request a valid Let's Encrypt certificate."
-        },
-        "http2https": {
-            "type": "boolean",
-            "title": "HTTP to HTTPS redirection",
-            "description": "Redirect all the HTTP requests to HTTPS"
+        "path": {
+            "type": "string",
+            "description": "Path to the netdata configuration file"
         }
     }
 }
