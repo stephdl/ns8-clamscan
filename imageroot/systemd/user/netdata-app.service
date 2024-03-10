@@ -20,6 +20,7 @@ ExecStartPre=/bin/mkdir -p netdata/lib
 ExecStartPre=/bin/mkdir -p netdata/cache
 ExecStartPre=/bin/rm -f %t/netdata-app.pid %t/netdata-app.ctr-id
 ExecStartPre=-runagent discover-smarthost
+ExecStartPre=runagent set-hosname
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/netdata-app.pid \
     --cidfile %t/netdata-app.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/netdata.pod-id --replace -d --name  netdata-app \
