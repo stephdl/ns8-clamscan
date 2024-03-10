@@ -18,6 +18,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=-%S/state/environment
 Restart=always
 TimeoutStopSec=70
+ExecStartPre=runagent set-hosname
 ExecStartPre=/bin/rm -f %t/netdata.pid %t/netdata.pod-id
 ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/netdata.pid \
     --pod-id-file %t/netdata.pod-id \
