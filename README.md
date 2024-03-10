@@ -13,31 +13,21 @@ Output example:
 
     {"module_id": "netdata1", "image_name": "netdata", "image_url": "ghcr.io/nethserver/netdata:latest"}
 
-## Configure
+## Connect Node to netdata
+When you want to display  you node in netdata room  the application could ask you to prove that you are well the sysadmin of the agent. A file `netdata_random_session_id` contains some random strings that the netdata application could ask you. To retrieve it 
 
-Let's assume that the mattermost instance is named `netdata1`.
+`cat /var/lib/nethserver/netdata1/state/netdata/lib/netdata_random_session_id`
 
-Launch `configure-module`, by setting the following parameters:
-- `host`: a fully qualified domain name for the application
-- `http2https`: enable or disable HTTP to HTTPS redirection (true/false)
-- `lets_encrypt`: enable or disable Let's Encrypt certificate (true/false)
+Once you have pasted it you can see the node in the room
 
-
-Example:
+You coud  also register to a romm by setting two environment variables inside the file environment `/var/lib/nethserver/netdata1/state/environment`
 
 ```
-api-cli run configure-module --agent module/netdata1 --data - <<EOF
-{
-  "host": "netdata.domain.com",
-  "http2https": true,
-  "lets_encrypt": false
-}
-EOF
+NETDATA_CLAIM_ROOMS=
+NETDATA_CLAIM_TOKEN=
 ```
 
-The above command will:
-- start and configure the netdata instance
-- configure a virtual host for trafik to access the instance
+Once done you can restart the service by `systemctl restart netdata1`
 
 ## Get the configuration
 You can retrieve the configuration with
