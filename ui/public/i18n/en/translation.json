@@ -18,7 +18,8 @@
     "mount": "Mount",
     "no_services": "No services",
     "no_images": "No images",
-    "no_volumes": "No volumes"
+    "no_volumes": "No volumes",
+    "app_url": "Application URL"
   },
   "settings": {
     "title": "Settings",
@@ -34,7 +35,8 @@
     "instance_configuration": "Configure netdata",
     "domain_already_used_in_traefik": "Domain already used in traefik",
     "host_pattern": "Must be a valid fully qualified domain name",
-    "host_format": "Must be a valid fully qualified domain name"
+    "host_format": "Must be a valid fully qualified domain name",
+    "netdata_path": "Netdata path"
   },
   "about": {
     "title": "About"
