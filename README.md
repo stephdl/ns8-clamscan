@@ -1,33 +1,6 @@
 # ns8-netdata
 
-This is a template module for [NethServer 8](https://github.com/NethServer/ns8-core).
-To start a new module from it:
-
-1. Click on [Use this template](https://github.com/NethServer/ns8-netdata/generate).
-   Name your repo with `ns8-` prefix (e.g. `ns8-mymodule`). 
-   Do not end your module name with a number, like ~~`ns8-baaad2`~~!
-
-1. Clone the repository, enter the cloned directory and
-   [configure your GIT identity](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup#_your_identity)
-
-1. Rename some references inside the repo:
-   ```
-   modulename=$(basename $(pwd) | sed 's/^ns8-//') &&
-   git mv imageroot/systemd/user/netdata.service imageroot/systemd/user/${modulename}.service &&
-   git mv imageroot/systemd/user/netdata-app.service imageroot/systemd/user/${modulename}-app.service && 
-   git mv tests/netdata.robot tests/${modulename}.robot &&
-   sed -i "s/netdata/${modulename}/g" $(find .github/ * -type f) &&
-   git commit -a -m "Repository initialization"
-   ```
-
-1. Edit this `README.md` file, by replacing this section with your module
-   description
-
-1. Adjust `.github/workflows` to your needs. `clean-registry.yml` might
-   need the proper list of image names to work correctly. Unused workflows
-   can be disabled from the GitHub Actions interface.
-
-1. Commit and push your local changes
+Netdata collects metrics per second and presents them in beautiful low-latency dashboards. It is designed to run on all of your physical and virtual servers, cloud deployments, Kubernetes clusters, and edge/IoT devices, to monitor your systems, containers, and applications.
 
 ## Install
 
@@ -129,27 +102,27 @@ d8df02bf6f4a  docker.io/library/mariadb:10.11.5          --character-set-s...  9
 
 you can see what environment variable is inside the container
 ```
-podman exec  netdata-app env
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+podman exec  netdata1 env
 TERM=xterm
-PKG_RELEASE=1
-MARIADB_DB_HOST=127.0.0.1
-MARIADB_DB_NAME=netdata
-MARIADB_IMAGE=docker.io/mariadb:10.11.5
-MARIADB_DB_TYPE=mysql
 container=podman
-NGINX_VERSION=1.24.0
-NJS_VERSION=0.7.12
-MARIADB_DB_USER=netdata
-MARIADB_DB_PASSWORD=netdata
-MARIADB_DB_PORT=3306
+NETDATA_EXTRA_DEB_PACKAGES=lm-sensors
+NETDATA_CLAIM_TOKEN=
+NETDATA_CLAIM_ROOMS=
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+NETDATA_OFFICIAL_IMAGE=true
+DOCKER_GRP=netdata
+DOCKER_USR=netdata
+NETDATA_LISTENER_PORT=19999
+DEBIAN_FRONTEND=noninteractive
+NETDATA_CLAIM_URL=https://app.netdata.cloud
+HOSTNAME=r3-pve.rocky9-pve3.org
 HOME=/root
 ```
 
 you can run a shell inside the container
 
 ```
-podman exec -ti   netdata-app sh
+podman exec -ti   netdata1 sh
 / # 
 ```
 ## Testing
