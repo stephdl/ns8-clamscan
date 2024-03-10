@@ -1,19 +1,19 @@
 {
   "name": "netdata",
   "description": {
-    "en": "My netdata module"
+    "en": "Netdata is a monitoring agent designed to run on all your systems."
   },
-  "categories": [],
+  "categories": ["monitoring"],
   "authors": [
     {
-      "name": "Name Surname",
-      "email": "author@yourmail.org"
+      "name": "Stéphane de Labrusse",
+      "email": "stephdl@de-labrusse.fr"
     }
   ],
   "docs": {
-    "documentation_url": "https://docs.netdata.com/",
+    "documentation_url": "https://learn.netdata.cloud/",
     "bug_url": "https://github.com/NethServer/dev",
-    "code_url": "https://github.com/author/ns8-netdata"
+    "code_url": "https://github.com/NethServer/ns8-netdata"
   },
   "source": "ghcr.io/nethserver/netdata"
 }
