@@ -4,25 +4,31 @@
 #
 
 [Unit]
-Description=Podman  netdata-app.service
-BindsTo=netdata.service
-After=netdata.service
+Description=Podman  netdata.service
+After=network.target
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-EnvironmentFile=%S/state/environment
-EnvironmentFile=-%S/state/smarthost.env
-WorkingDirectory=%S/state
+EnvironmentFile=/var/lib/nethserver/%N/state/environment
+WorkingDirectory=/var/lib/nethserver/%N/state
+SyslogIdentifier=%N
 Restart=always
 TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/%N.pid %t/%N.cid
 ExecStartPre=/bin/mkdir -p netdata/config 
 ExecStartPre=/bin/mkdir -p netdata/lib
 ExecStartPre=/bin/mkdir -p netdata/cache
-ExecStartPre=/bin/rm -f %t/netdata-app.pid %t/netdata-app.ctr-id
-ExecStartPre=-runagent discover-smarthost
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/netdata-app.pid \
-    --cidfile %t/netdata-app.ctr-id --cgroups=no-conmon \
-    --pod-id-file %t/netdata.pod-id --replace -d --name  netdata-app \
+ExecStartPre=/usr/local/bin/runagent -m %N set-hosname
+ExecStartPre=/usr/local/bin/runagent -m %N discover-smarthost
+ExecStart=/usr/bin/podman run \
+    --detach \
+    --privileged \
+    --conmon-pidfile %t/%N.pid \
+    --cidfile %t/%N.cid \
+    --cgroups=no-conmon \
+    --replace --name=%N \
+    --hostname="${HOSTNAME}" \
+    --publish 127.0.0.1:${TCP_PORT}:19999 \
     --volume ./netdata/config:/etc/netdata:Z \
     --volume ./netdata/lib:/var/lib/netdata:Z \
     --volume ./netdata/cache:/var/cache/netdata:Z \
@@ -41,11 +47,9 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/netdata-app.pid \
     --env NETDATA_CLAIM_ROOMS="${NETDATA_CLAIM_ROOMS}" \
     --env NETDATA_EXTRA_DEB_PACKAGES="lm-sensors" \
      ${NETDATA_IMAGE}
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/netdata-app.ctr-id -t 10
-ExecReload=/usr/bin/podman kill -s HUP netdata-app
-SyslogIdentifier=%u
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/netdata-app.ctr-id
-PIDFile=%t/netdata-app.pid
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%N.cid -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/%N.cid
+PIDFile=%t/%N.pid
 Type=forking
 
 [Install]

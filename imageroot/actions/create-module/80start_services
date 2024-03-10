@@ -13,4 +13,6 @@ exec 1>&2
 
 touch smarthost.env
 
-systemctl --user enable --now netdata.service
+install -m 644 "${AGENT_INSTALL_DIR}/netdata.service" "/etc/systemd/system/${MODULE_ID}.service"
+systemctl daemon-reload
+systemctl enable --now "${MODULE_ID}.service"
