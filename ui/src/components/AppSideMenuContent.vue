@@ -21,13 +21,13 @@
         <template v-slot:nav-icon><Activity20 /></template>
         <span>{{ $t("status.title") }}</span>
       </cv-side-nav-link>
-      <cv-side-nav-link
+      <!-- <cv-side-nav-link
         @click="goToAppPage(instanceName, 'settings')"
         :class="{ 'current-page': isLinkActive('settings') }"
       >
         <template v-slot:nav-icon><Settings20 /></template>
         <span>{{ $t("settings.title") }}</span>
-      </cv-side-nav-link>
+      </cv-side-nav-link> -->
       <cv-side-nav-link
         @click="goToAppPage(instanceName, 'about')"
         :class="{ 'current-page': isLinkActive('about') }"
