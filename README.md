@@ -36,6 +36,22 @@ You can retrieve the configuration with
 api-cli run get-configuration --agent module/netdata1
 ```
 
+## Write a custom configuration
+
+https://learn.netdata.cloud/docs/netdata-agent/installation/docker#configure-agent-containers
+
+```
+podman  exec -ti netdata1 bash
+cd /etc/netdata
+#download the configuration example 
+curl -o /etc/netdata/netdata.conf2 http://localhost:19999/netdata.conf
+# edit the configuration and restart
+./edit-config netdata.conf
+# exit of the container
+exit
+systemctl restart netdata1
+```
+
 ## Uninstall
 
 To uninstall the instance:
