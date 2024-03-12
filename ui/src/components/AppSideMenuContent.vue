@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import Settings20 from "@carbon/icons-vue/es/settings/20";
+// import Settings20 from "@carbon/icons-vue/es/settings/20";
 import Information20 from "@carbon/icons-vue/es/information/20";
 import Activity20 from "@carbon/icons-vue/es/activity/20";
 import { mapState } from "vuex";
@@ -49,7 +49,7 @@ import { QueryParamService, UtilService } from "@nethserver/ns8-ui-lib";
 export default {
   name: "AppSideMenuContent",
   components: {
-    Settings20,
+    // Settings20,
     Information20,
     Activity20,
   },
