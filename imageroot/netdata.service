@@ -28,7 +28,9 @@ ExecStart=/usr/bin/podman run \
     --cgroups=no-conmon \
     --replace --name=%N \
     --hostname="${HOSTNAME}" \
-    --publish 127.0.0.1:${TCP_PORT}:19999 \
+    --uts=host \
+    --pid=host \
+    --network=host \
     --volume ./netdata/config:/etc/netdata:Z \
     --volume ./netdata/lib:/var/lib/netdata:Z \
     --volume ./netdata/cache:/var/cache/netdata:Z \
