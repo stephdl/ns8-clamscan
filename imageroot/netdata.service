@@ -15,9 +15,7 @@ SyslogIdentifier=%N
 Restart=always
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%N.pid %t/%N.cid
-ExecStartPre=/bin/mkdir -p netdata/config 
-ExecStartPre=/bin/mkdir -p netdata/lib
-ExecStartPre=/bin/mkdir -p netdata/cache
+ExecStartPre=/bin/mkdir -p netdata/config
 ExecStartPre=/usr/local/bin/runagent -m %N discover-smarthost
 ExecStart=/usr/bin/podman run \
     --detach \
@@ -30,8 +28,8 @@ ExecStart=/usr/bin/podman run \
     --pid=host \
     --network=host \
     --volume ./netdata/config:/etc/netdata:Z \
-    --volume ./netdata/lib:/var/lib/netdata:Z \
-    --volume ./netdata/cache:/var/cache/netdata:Z \
+    --volume ${MODULE_ID}-lib:/var/lib/netdata:Z \
+    --volume ${MODULE_ID}-cache:/var/cache/netdata:Z \
     --volume /etc/passwd:/host/etc/passwd:ro \
     --volume /etc/group:/host/etc/group:ro \
     --volume /proc:/host/proc:ro \
