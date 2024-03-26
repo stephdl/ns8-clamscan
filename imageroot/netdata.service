@@ -42,6 +42,7 @@ ExecStart=/usr/bin/podman run \
     --cap-add SYS_ADMIN \
     --cap-add SYS_PTRACE \
     --security-opt apparmor=unconfined \
+    --env NETDATA_LISTENER_PORT=${TCP_PORT} \
     --env NETDATA_CLAIM_TOKEN="${NETDATA_CLAIM_TOKEN}" \
     --env NETDATA_CLAIM_URL=https://app.netdata.cloud \
     --env NETDATA_CLAIM_ROOMS="${NETDATA_CLAIM_ROOMS}" \

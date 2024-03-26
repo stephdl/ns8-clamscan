@@ -44,7 +44,7 @@ response = agent.tasks.run(
     action='set-route',
     data={
         'instance': os.environ['MODULE_ID'],
-        'url': f'http://127.0.0.1:19999',
+        'url': f'http://127.0.0.1:{os.environ["TCP_PORT"]}',
         'path': f'/{path}',
         'http2https': True,
         'lets_encrypt': False,
