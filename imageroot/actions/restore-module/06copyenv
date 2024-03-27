@@ -19,5 +19,3 @@ for evar in [
         "NETDATA_CLAIM_ROOMS",
     ]:
     agent.set_env(evar, original_environment[evar])
-
-agent.dump_env()
