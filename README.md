@@ -16,14 +16,11 @@ Output example:
 ## Connect Node to netdata
 When you want to display  you node in netdata room  the application could ask you to prove that you are well the sysadmin of the agent. A file `netdata_random_session_id` contains some random strings that the netdata application could ask you. To retrieve it:
 
-first become nedata
-`runagent -m netdata1`
-then retrieve the random string
-` cat /var/lib/containers/storage/volumes/netdata1-lib/_data/netdata_random_session_id`
+    podman exec netdata1 cat /var/lib/netdata/netdata_random_session_id
 
 Once you have pasted it you can see the node in the room
 
-You coud  also register to a room by setting two environment variables inside the file environment `vim environment`
+You could also register to a room by setting two environment variables inside the file environment `vim environment`
 
 ```
 NETDATA_CLAIM_ROOMS=
