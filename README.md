@@ -14,13 +14,13 @@ Output example:
     {"module_id": "netdata1", "image_name": "netdata", "image_url": "ghcr.io/nethserver/netdata:latest"}
 
 ## Connect Node to netdata
-When you want to display  you node in netdata room  the application could ask you to prove that you are well the sysadmin of the agent. A file `netdata_random_session_id` contains some random strings that the netdata application could ask you. To retrieve it 
+When you want to display  you node in netdata room  the application could ask you to prove that you are well the sysadmin of the agent. A file `netdata_random_session_id` contains some random strings that the netdata application could ask you. To retrieve it:
 
-`cat /var/lib/nethserver/netdata1/state/netdata/lib/netdata_random_session_id`
+    podman exec netdata1 cat /var/lib/netdata/netdata_random_session_id
 
 Once you have pasted it you can see the node in the room
 
-You coud  also register to a romm by setting two environment variables inside the file environment `/var/lib/nethserver/netdata1/state/environment`
+You could also register to a room by setting two environment variables inside the file environment `vim environment`
 
 ```
 NETDATA_CLAIM_ROOMS=
@@ -57,25 +57,6 @@ systemctl restart netdata1
 To uninstall the instance:
 
     remove-module --no-preserve netdata1
-
-## Smarthost setting discovery
-
-Some configuration settings, like the smarthost setup, are not part of the
-`configure-module` action input: they are discovered by looking at some
-Redis keys.  To ensure the module is always up-to-date with the
-centralized [smarthost
-setup](https://nethserver.github.io/ns8-core/core/smarthost/) every time
-netdata starts, the command `bin/discover-smarthost` runs and refreshes
-the `state/smarthost.env` file with fresh values from Redis.
-
-Furthermore if smarthost setup is changed when netdata is already
-running, the event handler `events/smarthost-changed/10reload_services`
-restarts the main module service.
-
-See also the `systemd/user/netdata.service` file.
-
-This setting discovery is just an example to understand how the module is
-expected to work: it can be rewritten or discarded completely.
 
 ## Debug
 

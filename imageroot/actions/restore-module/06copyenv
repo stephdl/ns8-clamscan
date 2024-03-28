@@ -14,10 +14,8 @@ request = json.load(sys.stdin)
 original_environment = request['environment']
 
 for evar in [
-        "TRAEFIK_HOST",
-        "TRAEFIK_HTTP2HTTPS",
-        "TRAEFIK_LETS_ENCRYPT",
+        "TRAEFIK_PATH",
+        "NETDATA_CLAIM_TOKEN",
+        "NETDATA_CLAIM_ROOMS",
     ]:
     agent.set_env(evar, original_environment[evar])
-
-agent.dump_env()
