@@ -5,25 +5,22 @@
     "description": "Get netdata settings",
     "examples": [
         {
-            "host": "netdata.domain.org",
-            "http2https": true,
-            "lets_encrypt": true
+            "path": "/99c1cc0443f5fa70f9abaddce815731ebd98f337",
+            "fqdn": "rl1.dp.nethserver.net"
         }
     ],
     "type": "object",
     "required": [
-        "fqdn",
         "path"
     ],
     "properties": {
         "fqdn": {
             "type": "string",
-            "description": "Host name for the application, like 'netdata.domain.org'",
-            "format": "idn-hostname"
+            "description": "The HTTP host name (FQDN)"
         },
         "path": {
             "type": "string",
-            "description": "Path to the netdata configuration file"
+            "description": "HTTP path prefix to access Netdata"
         }
     }
 }

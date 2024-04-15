@@ -13,5 +13,7 @@ set -e
 #
 systemctl disable --now "${MODULE_ID}.service"
 rm -vf "/etc/systemd/system/${MODULE_ID}.service"
-
 systemctl daemon-reload
+
+# Clean up volumes
+podman volume rm --force "${MODULE_ID}-cache" "${MODULE_ID}-config" "${MODULE_ID}-data" || :

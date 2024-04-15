@@ -20,6 +20,7 @@ data = json.load(sys.stdin)
 
 def generate_random_hex_string(length):
     return secrets.token_hex(length)
+
 path = os.environ.get('TRAEFIK_PATH')
 # Setup path for traefik
 if not path:

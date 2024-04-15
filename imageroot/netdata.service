@@ -4,7 +4,7 @@
 #
 
 [Unit]
-Description=Podman  netdata.service
+Description=Netdata node monitoring
 After=network.target
 
 [Service]
@@ -15,7 +15,7 @@ SyslogIdentifier=%N
 Restart=always
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%N.pid %t/%N.cid
-ExecStartPre=/bin/mkdir -p netdata/config
+ExecStartPre=runagent -m ${MODULE_ID} bash -c 'ln -vsf /$(if [ -n "$(ls -A /run/log/journal)" ]; then echo run ; else echo var ; fi)/log/journal .'
 ExecStart=/usr/bin/podman run \
     --detach \
     --privileged \
@@ -26,25 +26,26 @@ ExecStart=/usr/bin/podman run \
     --uts=host \
     --pid=host \
     --network=host \
-    --volume ./netdata/config:/etc/netdata:Z \
-    --volume ${MODULE_ID}-lib:/var/lib/netdata:Z \
-    --volume ${MODULE_ID}-cache:/var/cache/netdata:Z \
+    --volume ${MODULE_ID}-config:/etc/netdata:z \
+    --volume ${MODULE_ID}-lib:/var/lib/netdata:z \
+    --volume ${MODULE_ID}-cache:/var/cache/netdata:z \
     --volume /etc/passwd:/host/etc/passwd:ro \
     --volume /etc/group:/host/etc/group:ro \
     --volume /proc:/host/proc:ro \
     --volume /sys:/host/sys:ro \
     --volume /etc/os-release:/host/etc/os-release:ro \
     --volume /etc/localtime:/etc/localtime:ro \
-    --volume /var/log:/host/var/log:ro \
+    --volume ./journal:/host/var/log/journal:ro \
+    --volume /run/dbus:/host/run/dbus \
     --cap-add SYS_ADMIN \
     --cap-add SYS_PTRACE \
     --security-opt apparmor=unconfined \
     --env NETDATA_LISTENER_PORT=${TCP_PORT} \
-    --env NETDATA_CLAIM_TOKEN="${NETDATA_CLAIM_TOKEN}" \
-    --env NETDATA_CLAIM_URL=https://app.netdata.cloud \
-    --env NETDATA_CLAIM_ROOMS="${NETDATA_CLAIM_ROOMS}" \
-    --env NETDATA_EXTRA_DEB_PACKAGES="lm-sensors" \
-     ${NETDATA_IMAGE}
+    --env NETDATA_* \
+     ${NETDATA_IMAGE} \
+        -W set statsd enabled no
+
+ExecStop=/usr/bin/podman kill --signal INT %N
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%N.cid -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/%N.cid
 PIDFile=%t/%N.pid

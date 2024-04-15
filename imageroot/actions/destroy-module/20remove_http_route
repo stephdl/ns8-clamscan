@@ -30,6 +30,3 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID']
     },
 )
-
-# Check if traefik configuration has been successfull
-agent.assert_exp(response['exit_code'] == 0)
