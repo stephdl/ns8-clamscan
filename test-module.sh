@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright (C) 2023 Nethesis S.r.l.
+# Copyright (C) 2024 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -31,8 +31,8 @@ cleanup() {
 trap cleanup EXIT
 podman run -i \
     --network=host \
-    -v .:/home/pwuser/ns8-module:z \
-    --volume=site-packages:/home/pwuser/.local/lib/python3.8/site-packages:Z \
+    --volume=.:/home/pwuser/ns8-module:z \
+    --volume=site-packages:/home/pwuser/.local/lib/python3.12/site-packages:z \
     --name rf-core-runner ghcr.io/marketsquare/robotframework-browser/rfbrowser-stable:19.1.2 \
     bash -l -s <<EOF
 set -e
@@ -43,7 +43,7 @@ cd /home/pwuser/ns8-module
 exec robot -v NODE_ADDR:${LEADER_NODE} \
     -v IMAGE_URL:${IMAGE_URL} \
     -v SSH_KEYFILE:/home/pwuser/ns8-key \
-    --name netdata \
+    --name "$(basename $PWD)" \
     --skiponfailure unstable \
     -d ~/outputs ${@} /home/pwuser/ns8-module/tests/
 EOF
