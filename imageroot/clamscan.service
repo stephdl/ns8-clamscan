@@ -28,10 +28,10 @@ ExecStart=/usr/bin/podman run \
     --cidfile %t/%N.cid \
     --cgroups=no-conmon \
     --replace --name=%N \
-    --env 'CLAMAV_NO_MILTERD=false' \
+    --env 'CLAMAV_NO_MILTERD=true' \
     --env 'FRESHCLAM_CHECKS=6' \
     --volume %N-database:/var/lib/clamav:z \
-    --volume %N-sockets:/run/clamav:z \
+    --volume %N-sockets:/tmp:z \
     --volume %N-etc:/etc/clamav:z \
     ${CLAMAV_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%N.cid -t 10
