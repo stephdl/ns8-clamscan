@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2025 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+exec 1>&2 # Send any output to stderr, to not alter the action response protocol
+set -e
+
+#
+# We must stop and clean up what we installed in the "create-module" action
+#
+systemctl disable --now "${MODULE_ID}.service"
+rm -vf "/etc/systemd/system/${MODULE_ID}.service"
+# # remove the timer
+# systemctl disable --now "${MODULE_ID}-upgrade-hub.timer"
+# rm -vf /etc/systemd/system/${MODULE_ID}-upgrade-hub.service
+# rm -vf /etc/systemd/system/${MODULE_ID}-upgrade-hub.timer
+
+# # remove the bouncer service
+# systemctl disable --now "${MODULE_ID}-firewall-bouncer.service"
+# rm -vf "/etc/systemd/system/${MODULE_ID}-firewall-bouncer.service"
+
+systemctl daemon-reload

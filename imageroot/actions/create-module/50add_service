@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2025 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+set -e
+
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
+
+
+install -m 644 "${AGENT_INSTALL_DIR}/clamscan.service" "/etc/systemd/system/${MODULE_ID}.service"
+systemctl daemon-reload
+systemctl enable --now "${MODULE_ID}.service"
