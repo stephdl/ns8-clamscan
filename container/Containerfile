@@ -1,0 +1,22 @@
+FROM docker.io/clamav/clamav:1.4.2
+MAINTAINER stephane de Labrusse <stephdl@de-labrusse.fr>
+ENV REFRESHED_AT 2025-04-03
+CMD ["/bin/ash"]
+ENV source_url https://raw.githubusercontent.com/extremeshok/clamav-unofficial-sigs/7.2.5
+RUN set -e && \
+apk add --no-cache curl && \
+mkdir -vp /usr/local/sbin /etc/clamav-unofficial-sigs /var/lib/clamav-unofficial-sigs && \
+chmod -c 750 /var/lib/clamav-unofficial-sigs   && \
+chown -c clamav:clamav /var/lib/clamav-unofficial-sigs && \
+cd /usr/local/sbin && \
+curl -sfL -O "${source_url}/clamav-unofficial-sigs.sh" && \
+chmod -c 755 clamav-unofficial-sigs.sh && \
+cd /etc/clamav-unofficial-sigs && \
+curl -sfL "${source_url}/config/master.conf" > master.conf && \
+curl -sfL "${source_url}/config/user.conf" > user.conf.orig && \
+curl -sfL "${source_url}/config/os/os.alpine.conf" > os.conf && \
+chmod -c 644 *.conf && \
+echo 'logging_enabled="no"' >> os.conf 
+
+ADD download-sigs /usr/local/sbin/download-sigs
+RUN chmod -c 755 /usr/local/sbin/download-sigs
