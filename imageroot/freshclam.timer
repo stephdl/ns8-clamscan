@@ -1,0 +1,9 @@
+[Unit]
+Description=Timer of freshclam service
+
+[Timer]
+OnActiveSec=20 minutes
+OnUnitInactiveSec=60 minutes
+
+[Install]
+WantedBy=timers.target

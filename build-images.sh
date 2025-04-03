@@ -15,6 +15,14 @@ repobase="${REPOBASE:-ghcr.io/stephdl}"
 # Configure the image name
 reponame="clamscan"
 
+
+podman build \
+    --force-rm \
+    --layers \
+    --tag "${repobase}/clamscan-app" \
+    container
+
+images+=("${repobase}/clamscan-app")
 # Create a new empty container image
 container=$(buildah from scratch)
 
@@ -40,7 +48,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.max-per-node=1" \
     --label="org.nethserver.tcp-ports-demand=0" \
     --label="org.nethserver.rootfull=1" \
-    --label="org.nethserver.images=docker.io/clamav/clamav:1.4.2" \
+    --label="org.nethserver.images=ghcr.io/stephdl/clamscan-app:${IMAGETAG}" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"

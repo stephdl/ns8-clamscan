@@ -12,5 +12,11 @@ exec 1>&2
 
 
 install -m 644 "${AGENT_INSTALL_DIR}/clamscan.service" "/etc/systemd/system/${MODULE_ID}.service"
+install -m 644 "${AGENT_INSTALL_DIR}/freshclam.timer" "/etc/systemd/system/${MODULE_ID}-freshclam.timer"
+install -m 644 "${AGENT_INSTALL_DIR}/clamav-unofficial-sigs.timer" "/etc/systemd/system/${MODULE_ID}-clamav-unofficial-sigs.timer"
 systemctl daemon-reload
+# Enable the service
 systemctl enable --now "${MODULE_ID}.service"
+# Enable timers
+systemctl enable --now "${MODULE_ID}-clamav-unofficial-sigs.timer"
+systemctl enable --now "${MODULE_ID}-freshclam.timer"

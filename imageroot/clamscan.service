@@ -33,6 +33,7 @@ ExecStart=/usr/bin/podman run \
     --volume %N-database:/var/lib/clamav:z \
     --volume %N-sockets:/tmp:z \
     --volume %N-etc:/etc/clamav:z \
+    --volume %N-unofficial-database:/var/lib/clamav-unofficial-sigs:z \
     ${CLAMAV_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%N.cid -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/%N.cid
